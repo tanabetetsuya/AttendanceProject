@@ -24,17 +24,18 @@ public class SecurityConfig { // セキュリティ設定のクラス
         http
             .authorizeHttpRequests(authorize ->  // 認証リクエストを設定します
                 authorize
-                    .requestMatchers("/login", "/register").permitAll() // "/login"と"/register"へのリクエストは認証なしで許可します
+                    .requestMatchers("/user/login", "/user/register").permitAll() // "/login"と"/register"へのリクエストは認証なしで許可します
                     .anyRequest().authenticated() // それ以外の全てのリクエストは認証が必要です
             )
             .formLogin(formLogin ->  // フォームベースのログインを設定します
                 formLogin
-                    .loginPage("/login") // ログインページのURLを設定します
+                    .loginPage("/user/login") // ログインページのURLを設定します
+                    .loginProcessingUrl("/user/login") // POSTも/user/loginで受け入れる
                     .permitAll() // ログインページは認証なしで許可します
             )
             .logout(logout ->  // ログアウトを設定します
                 logout
-                    .logoutUrl("/logout").permitAll() // ログアウトのリクエストURLを設定します
+                    .logoutUrl("/user/logout").permitAll() // ログアウトのリクエストURLを設定します
             );
 
         return http.build(); // 上記の設定を反映してHttpSecurityオブジェクトをビルドします

@@ -10,7 +10,7 @@
     <div th:if="${param.logout}">
         <p>You have been logged out.</p>
     </div>
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/user/login}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div>
             <label>Username: </label>
@@ -23,7 +23,7 @@
         <button type="submit">Login</button>
     </form>
     <p>
-        Don't have an account? <a th:href="@{/register}">Register</a>  <!-- 新規アカウント作成ページへのリンクを追加 -->
+        Don't have an account? <a th:href="@{/user/register}">Register</a>  <!-- 新規アカウント作成ページへのリンクを追加 -->
     </p>
 </body>
 </html>
