@@ -9,10 +9,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.attendance.security.SuccessHandler;
+
 
 @Configuration // このクラスは設定クラスであることを示します
 @EnableWebSecurity // Webセキュリティを有効にすることを示します
 public class SecurityConfig { // セキュリティ設定のクラス
+	
+	private final SuccessHandler successHandler;
+	
+	// SuccessHandler をコンストラクタインジェクション
+    public SecurityConfig(SuccessHandler successHandler) {
+        this.successHandler = successHandler;
+    }
 
     @Bean // このメソッドの返り値をSpringのBeanとして登録します
     public PasswordEncoder passwordEncoder() { // パスワードエンコーダー（パスワードのハッシュ化）を提供するメソッド
@@ -24,13 +33,15 @@ public class SecurityConfig { // セキュリティ設定のクラス
         http
             .authorizeHttpRequests(authorize ->  // 認証リクエストを設定します
                 authorize
-                    .requestMatchers("/user/login", "/user/register").permitAll() // "/login"と"/register"へのリクエストは認証なしで許可します
+                    .requestMatchers("/user/login", "/user/register", "/admin/login").permitAll() // "/user/login"と"/user/register"と/admin/loginへのリクエストは認証なしで許可します
+                    .requestMatchers("/admin/**").hasRole("ADMIN") // /admin/**以下はADMINだけ許可する
                     .anyRequest().authenticated() // それ以外の全てのリクエストは認証が必要です
             )
             .formLogin(formLogin ->  // フォームベースのログインを設定します
                 formLogin
                     .loginPage("/user/login") // ログインページのURLを設定します
                     .loginProcessingUrl("/user/login") // POSTも/user/loginで受け入れる
+                    .successHandler(successHandler)
                     .permitAll() // ログインページは認証なしで許可します
             )
             .logout(logout ->  // ログアウトを設定します

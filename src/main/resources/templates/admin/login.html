@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>管理者ログイン画面</title>
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.2/css/bootstrap.min.css}"/>
+    <title>Login</title>
 </head>
-<body class="d-flex flex-column min-vh-100">
-	<div th:replace="share::header"></div>
-	<div class="container flex-grow-1">
-		<h1>管理者ログイン</h1>
-		<form action="#" th:action="@{/admin/login}" th:object="${loginForm}" method="post">
-	      <table>
-	        <tr>
-	          <th class="cell_title">ID</th>
-	          <td><input type="text" th:field="*{Id}"></td>
-	        </tr>
-	        <tr>
-	          <th class="cell_title">パスワード</th>
-	          <td><input type="password" th:field="*{Password}"></td>
-	        </tr>
-	        <tr><td><input type="hidden" name="Admin" value="role"></td></tr>
-	      </table>
-	      <button type="submit">ログイン</button>
-	      <input type="button" value="終了" onclick="window.open('about:blank', '_self').close()">
-	    </form>
-	</div>
-	<div th:replace="share::footer"></div>
+<body>
+    <div th:if="${param.error}">
+        <p>Invalid username and password.</p>
+    </div>
+    <div th:if="${param.logout}">
+        <p>You have been logged out.</p>
+    </div>
+    <form th:action="@{/user/login}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div>
+            <label>Username: </label>
+            <input type="text" name="username" required/>
+        </div>
+        <div>
+            <label>Password: </label>
+            <input type="password" name="password" required/>
+        </div>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>

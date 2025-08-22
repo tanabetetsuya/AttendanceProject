@@ -2,7 +2,7 @@ package com.attendance.service; // このファイルが属するパッケージ
 
 // 必要なツールをインポートしています
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +24,7 @@ public class UserPrincipal implements UserDetails {
     // ユーザーに与えられる権限を返します。ここでは全てのユーザーに"USER"という権限を与えています。
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 
     // Userオブジェクトのパスワードを返します。

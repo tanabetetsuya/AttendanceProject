@@ -1,5 +1,6 @@
 package com.attendance.service; // このファイルが属するパッケージ（フォルダ）
 
+
 // 必要なクラスをインポートします
 import jakarta.transaction.Transactional;
 
@@ -22,6 +23,8 @@ public class UserService implements UserDetailsService { // UserDetailsService�
 
     @Autowired // Springが自動的にPasswordEncoderの実装を注入します
     private PasswordEncoder passwordEncoder;
+    
+    
 
     @Override // UserDetailsServiceインターフェースのメソッドを上書きします
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
