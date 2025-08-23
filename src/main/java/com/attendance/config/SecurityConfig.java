@@ -35,6 +35,7 @@ public class SecurityConfig { // セキュリティ設定のクラス
                 authorize
                     .requestMatchers("/user/login", "/user/register", "/admin/login").permitAll() // "/user/login"と"/user/register"と/admin/loginへのリクエストは認証なしで許可します
                     .requestMatchers("/admin/**").hasRole("ADMIN") // /admin/**以下はADMINだけ許可する
+                    .requestMatchers("/user/**").hasRole("USER") // /user/**以下はUSERだけ許可する
                     .anyRequest().authenticated() // それ以外の全てのリクエストは認証が必要です
             )
             .formLogin(formLogin ->  // フォームベースのログインを設定します
