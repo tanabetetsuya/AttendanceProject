@@ -52,4 +52,17 @@ public class UserService implements UserDetailsService { // UserDetailsService�
         // データベースへの保存
         userRepository.save(user); // UserRepositoryを使ってユーザーをデータベースに保存します
     }
+    
+    @Transactional // トランザクションを開始します。メソッドが終了したらトランザクションがコミットされます。
+    public void saveAdmin(UserDto userDto) {
+    	// UserDtoからUserへの変換
+    	User user = new User();
+    	user.setName(userDto.getName());
+    	// パスワードをハッシュ化してから保存
+    	user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    	user.setRole("ADMIN");
+    	
+    	// データベースへの保存
+    	userRepository.save(user);
+    }
 }
