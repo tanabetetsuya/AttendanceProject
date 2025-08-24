@@ -1,5 +1,9 @@
 package com.attendance.controller; // このファイルが属するパッケージ（フォルダ）
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 // 必要なクラスをインポートします
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,5 +47,27 @@ public class LoginController {
     @GetMapping("/user/index") // "/index"というURLに対するGETリクエストを処理します
     public String index() {
         return "user/index"; // index.htmlを表示します
+    }
+    
+    @GetMapping("/user/logout")
+    public String UserLogout(HttpServletRequest request, HttpServletResponse response) {
+        // セッションを無効にする
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        // ログアウト処理が完了したらトップページにリダイレクトする
+        return "redirect:/";
+    }
+    
+    @GetMapping("/admin/logout")
+    public String AdminLogout(HttpServletRequest request, HttpServletResponse response) {
+        // セッションを無効にする
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        // ログアウト処理が完了したらトップページにリダイレクトする
+        return "redirect:/";
     }
 }
