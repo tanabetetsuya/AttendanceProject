@@ -28,7 +28,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
                 response.sendRedirect("/admin/index"); // 管理者は /admin/index
                 return;
             } else if ("ROLE_USER".equals(authority.getAuthority())) {
-                response.sendRedirect("/user/index"); // 一般ユーザは /user/index
+                response.sendRedirect("/user/AttendanceHandling"); // 一般ユーザは /user/index
                 return;
             }
         }
