@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<head><meta charset="UTF-8"><title>勤務入力</title></head>
 <body>
+    <h2>勤務時間</h2>
 
+	<p>ログイン中: <span th:text="${user.name}"></span></p>
+	<p>ユーザID: <span th:text="${user.id}"></span></p>
+	
+	<table border="1">
+	    <tr>
+	        <th>日付</th>
+	        <th>開始</th>
+	        <th>終了</th>
+	        <th>備考</th>
+	    </tr>
+	    <tr th:each="r : ${records}">
+	        <td th:text="${r.date}"></td>
+	        <td th:text="${r.startTime}"></td>
+	        <td th:text="${r.finishTime}"></td>
+	        <td th:text="${r.bikou}"></td>
+	    </tr>
+	</table>
+	
+	<h3>勤務時間入力</h3>
+		<form th:action="@{/user/{id}/save(id=${user.id})}" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		    <input type="hidden" name="userId" th:value="${user.id}">
+		    日付: <input type="date" name="date" required><br>
+		    開始: <input type="time" name="startTime" required><br>
+		    終了: <input type="time" name="finishTime" required><br>
+	    	備考:
+	    <select name="bikou" required>
+	        <option value="通常出勤">通常出勤</option>
+	        <option value="時差出勤">時差出勤</option>
+	        <option value="遅刻">遅刻</option>
+	        <option value="早退">早退</option>
+	        <option value="休暇">休暇</option>
+	    </select><br>
+
+		    <button type="submit">登録</button>
+		</form>
+	
+	<a href="#" th:href="@{/user/logout}" th:attr="data-method='post'">ログアウト</a>
 </body>
 </html>
