@@ -1,5 +1,6 @@
 package com.attendance.model;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -48,4 +49,89 @@ public class TimeRecord {
     public TimeRecord() {
 
     }
+    
+    // 勤務開始時間を5分刻みに切り捨て
+    public LocalTime getRoundedStartTime() {
+    	if (startTime == null) return null;
+    	int minutes = (startTime.getMinute() / 5) * 5;
+    	return LocalTime.of(startTime.getHour(), minutes);
+    }
+    
+    // 勤務終了時間を5分刻みに切り上げ
+    public LocalTime getRoundedFinishTime() {
+    	if (finishTime == null) return null;
+    	int minutes = finishTime.getMinute();
+    	int remainder = minutes % 5;
+    	if (remainder != 0) {
+    		minutes += (5 - remainder);
+    		if (minutes == 60) {
+        		return LocalTime.of(finishTime.getHour() + 1, 0);
+        	}
+    	}
+ 
+    	
+    	return LocalTime.of(finishTime.getHour(), minutes);
+    }
+    
+    // 休憩開始時刻を5分刻みに丸めて取得
+    public LocalTime getRoundedStartBreakTime() {
+    	if (startBreakTime == null) return null;
+    	int minutes = (startBreakTime.getMinute() / 5) * 5;
+    	return LocalTime.of(startBreakTime.getHour(), minutes);
+    }
+    
+    // 休憩終了時刻を5分刻みに切り上げ
+    public LocalTime getRoundedFinishBreakTime() {
+    	if (finishBreakTime == null) return null;
+    	int minutes = finishBreakTime.getMinute();
+    	int remainder = minutes % 5;
+    	if (remainder != 0) { // 5分未満なら切り上げ
+    		minutes += (5 - remainder);
+    		if (minutes == 60) { // 60分の場合は次の時間に繰り上げ
+        		return LocalTime.of(finishBreakTime.getHour() + 1, 0);
+        	}
+    	}
+    	
+    	return LocalTime.of(finishBreakTime.getHour(), minutes);
+    }
+    
+    // 勤務時間（休憩時間を引いた実働時間）を取得
+    public Duration getWorkDuration() {
+        if (startTime == null || finishTime == null || startBreakTime == null || finishBreakTime == null) {
+            return Duration.ZERO; // または null を返して、呼び出し側で処理
+        }
+        Duration total = Duration.between(getRoundedStartTime(), getRoundedFinishTime())
+                             .minus(Duration.between(getRoundedStartBreakTime(), getRoundedFinishBreakTime()));
+        return total.isNegative() ? Duration.ZERO : total; // 負にならないように
+    }
+
+
+    // 残業時間（8時間以上の時間を残業とする）
+    public Duration getOvertime() {
+        Duration workDuration = getWorkDuration();
+        Duration normalWork = Duration.ofHours(8);
+        if (workDuration.compareTo(normalWork) > 0) {
+            return workDuration.minus(normalWork);
+        } else {
+            return Duration.ZERO;
+        }
+    }
+
+    // 勤務時間を「HH:mm」形式で返す
+    public String getWorkDurationString() {
+        Duration duration = getWorkDuration();
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes() % 60;
+        return String.format("%02d:%02d", hours, minutes);
+    }
+
+
+    // 残業時間を「HH:mm」形式で返す
+    public String getOvertimeString() {
+        Duration d = getOvertime();
+        long hours = d.toHours();
+        long minutes = d.toMinutesPart();
+        return String.format("%02d:%02d", hours, minutes);
+    }
+
 }
