@@ -1,6 +1,8 @@
 package com.attendance.service; // このファイルが属するパッケージ（フォルダ）
 
 
+import java.util.List;
+
 // 必要なクラスをインポートします
 import jakarta.transaction.Transactional;
 
@@ -11,15 +13,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.attendance.model.TimeRecord;
 import com.attendance.model.User;
 import com.attendance.model.UserDto;
+import com.attendance.repository.TimeRecordRepository;
 import com.attendance.repository.UserRepository;
 
 @Service // このクラスがサービス層のクラスであることを示します
 public class UserService implements UserDetailsService { // UserDetailsServiceインターフェースを実装しています
 
-    @Autowired // Springが自動的にUserRepositoryの実装を注入します
+    
+	@Autowired // Springが自動的にUserRepositoryの実装を注入します
     private UserRepository userRepository;
+	
+	@Autowired // Springが自動的にTimeRecordRepositoryの実装を注入します
+	private TimeRecordRepository timeRecordRepository;
 
     @Autowired // Springが自動的にPasswordEncoderの実装を注入します
     private PasswordEncoder passwordEncoder;
@@ -38,6 +46,21 @@ public class UserService implements UserDetailsService { // UserDetailsService�
     //新たにメソッドを追加します
     public User findByUsername(String username) {
         return userRepository.findByName(username); // ユーザー名でユーザーを検索し返します
+    }
+    
+    public User getUserById(int id) {
+    	return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ユーザが見つかりません: " + id));
+    }
+    
+    // timerecordテーブル内のuser_idを検索するメソッドを追加します。
+    public List<TimeRecord> getTimeRecordsByUserId(int userId){
+    	return timeRecordRepository.findByUserId(userId);
+    }
+    
+    @Transactional
+    public void saveTimeRecord(TimeRecord record) {
+    	timeRecordRepository.save(record);
     }
 
     @Transactional // トランザクションを開始します。メソッドが終了したらトランザクションがコミットされます。
@@ -65,4 +88,5 @@ public class UserService implements UserDetailsService { // UserDetailsService�
     	// データベースへの保存
     	userRepository.save(user);
     }
+    
 }
