@@ -50,46 +50,43 @@ public class TimeRecord {
 
     }
     
-    // 勤務開始時間を5分刻みに切り捨て
+    // 勤務開始時間を50分以上は切り上げ
     public LocalTime getRoundedStartTime() {
     	if (startTime == null) return null;
-    	int minutes = (startTime.getMinute() / 5) * 5;
+    	int minutes = startTime.getMinute();
+    	if (minutes >= 50) {
+    			return LocalTime.of(startTime.getHour() + 1, 0);
+    	}
     	return LocalTime.of(startTime.getHour(), minutes);
     }
     
-    // 勤務終了時間を5分刻みに切り上げ
+    // 勤務終了時間を10分以内は切り捨て
     public LocalTime getRoundedFinishTime() {
     	if (finishTime == null) return null;
     	int minutes = finishTime.getMinute();
-    	int remainder = minutes % 5;
-    	if (remainder != 0) {
-    		minutes += (5 - remainder);
-    		if (minutes == 60) {
-        		return LocalTime.of(finishTime.getHour() + 1, 0);
-        	}
+    	if (minutes <= 10) {
+    		minutes = 0;
     	}
- 
-    	
     	return LocalTime.of(finishTime.getHour(), minutes);
     }
     
-    // 休憩開始時刻を5分刻みに丸めて取得
+    // 休憩開始時刻を10分以内は切り捨て
     public LocalTime getRoundedStartBreakTime() {
     	if (startBreakTime == null) return null;
-    	int minutes = (startBreakTime.getMinute() / 5) * 5;
+    	int minutes = startBreakTime.getMinute();
+    	if (minutes <= 10) {
+    		minutes = 0;
+    	}
     	return LocalTime.of(startBreakTime.getHour(), minutes);
     }
     
-    // 休憩終了時刻を5分刻みに切り上げ
+    // 休憩終了時刻を50分以上は切り上げ
     public LocalTime getRoundedFinishBreakTime() {
     	if (finishBreakTime == null) return null;
     	int minutes = finishBreakTime.getMinute();
-    	int remainder = minutes % 5;
-    	if (remainder != 0) { // 5分未満なら切り上げ
-    		minutes += (5 - remainder);
-    		if (minutes == 60) { // 60分の場合は次の時間に繰り上げ
+        
+    	if (minutes >= 50) { 
         		return LocalTime.of(finishBreakTime.getHour() + 1, 0);
-        	}
     	}
     	
     	return LocalTime.of(finishBreakTime.getHour(), minutes);
