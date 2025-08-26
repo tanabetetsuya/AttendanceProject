@@ -42,10 +42,19 @@ public class UserService implements UserDetailsService { // UserDetailsService�
         }
         return new UserPrincipal(user); // ユーザーが見つかった場合、UserPrincipalを作成し返します
     }
+    
+    // 新たにメソッドを追加します
+    public TimeRecord getTimeRecordById(int id) {
+    	return timeRecordRepository.findById(id).orElseThrow(() -> new RuntimeException("TimeRecord not found"));
+    }
 
     //新たにメソッドを追加します
     public User findByUsername(String username) {
-        return userRepository.findByName(username); // ユーザー名でユーザーを検索し返します
+        User user = userRepository.findByName(username); // ユーザー名でユーザーを検索し返します
+        if (user == null) {
+        	throw new RuntimeException("User not found" + username);
+        }
+        return user;
     }
     
     public User getUserById(int id) {
