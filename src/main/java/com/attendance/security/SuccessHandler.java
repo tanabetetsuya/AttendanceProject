@@ -25,7 +25,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
         // 権限ごとに遷移先を分岐
         for (GrantedAuthority authority : authorities) {
             if ("ROLE_ADMIN".equals(authority.getAuthority())) {
-                response.sendRedirect("/admin/index"); // 管理者は /admin/index
+                response.sendRedirect("/admin/AttendanceManagement"); // 管理者は /admin/index
                 return;
             } else if ("ROLE_USER".equals(authority.getAuthority())) {
                 response.sendRedirect("/user/AttendanceHandling"); // 一般ユーザは /user/index
