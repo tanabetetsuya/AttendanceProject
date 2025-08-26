@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>誤打刻修正申請</title>
 </head>
 <body>
+    <h2>誤打刻修正申請フォーム</h2>
 
+    <form th:action="@{/user/StampingCorrectionForm/{recordId}/{userId}(recordId=${record.timerecordId}, userId=${user.id})}" method="post">
+        
+		<p>申請ID: <span th:text="${record.timerecordId}"></span></p>
+        <p>日付: <span th:text="${record.date}"></span></p>
+
+        <p>修正理由: <input type="string" name="reason" required /></p>
+        <p>修正時間: <input type="string" name="correctTime" required /></p>
+
+
+        <button type="submit">申請</button>
+    </form>
+
+    <a th:href="@{/user/AttendanceHandling}" th-attr="data-method='get'">戻る</a>
 </body>
 </html>
