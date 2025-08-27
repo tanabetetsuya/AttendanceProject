@@ -52,7 +52,7 @@ public class UserController {
     }
     
     @GetMapping("/user/{id}")
-    public String viewTimeRecords(@PathVariable int id, Model model) {
+    public String showTimeRecords(@PathVariable int id, Model model) {
         model.addAttribute("user", service.getUserById(id));
         model.addAttribute("records", service.getTimeRecordsByUserId(id));
         model.addAttribute("recordForm", new TimeRecord());
