@@ -2,9 +2,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>勤怠修正フォーム</title>
 </head>
 <body>
+<h2 th:text="${user.name} + ' の勤怠修正'"></h2>
+
+<form th:action="@{/admin/StampingCorrect/{recordId}/{userId}/edit(recordId=${record.timerecordId}, userId=${user.id})}" 
+      th:object="${record}" method="post">
+
+    <table border="1">
+        <tr>
+            <td>日付</td>
+            <td th:text="${record.date}"></td>
+        </tr>
+        <tr>
+            <td>出勤時間</td>
+            <td><input type="time" th:field="*{startTime}" /></td>
+        </tr>
+        <tr>
+            <td>退勤時間</td>
+            <td><input type="time" th:field="*{finishTime}" /></td>
+        </tr>
+        <tr>
+            <td>休憩開始</td>
+            <td><input type="time" th:field="*{startBreakTime}" /></td>
+        </tr>
+        <tr>
+            <td>休憩終了</td>
+            <td><input type="time" th:field="*{finishBreakTime}" /></td>
+        </tr>
+        <tr>
+            <td>備考</td>
+            <td><input type="text" th:field="*{bikou}" /></td>
+        </tr>
+    </table>
+
+    <button type="submit">保存</button>
+    <a th:href="@{/admin/user/{id}/attendance(id=${user.id})}">キャンセル</a>
+</form>
 
 </body>
 </html>
