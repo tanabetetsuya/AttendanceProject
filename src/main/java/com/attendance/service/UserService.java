@@ -113,4 +113,38 @@ public class UserService implements UserDetailsService { // UserDetailsService�
     	userRepository.save(user);
     }
     
+    @Transactional
+    public void updateUser(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new RuntimeException("ユーザが見つかりません: " + userDto.getId()));
+
+        user.setName(userDto.getName());
+
+        // パスワードが入力されている場合のみ更新（空なら変更なし）
+        if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
+
+        user.setRole("USER");
+
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateAdminUser(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new RuntimeException("ユーザが見つかりません: " + userDto.getId()));
+
+        user.setName(userDto.getName());
+
+        // パスワードが入力されている場合のみ更新（空なら変更なし）
+        if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
+
+        user.setRole("ADMIN");
+
+        userRepository.save(user);
+    }
+    
 }

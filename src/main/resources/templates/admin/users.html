@@ -35,5 +35,8 @@
     Don't have an account? <a th:href="@{/admin/register}">Register</a>  <!-- 新規アカウント作成ページへのリンクを追加 -->
 </p>
 <a href="#" th:href="@{/admin/logout}" th:attr="data-method='post'">ログアウト</a>
+<form th:action="@{/admin/edit/{id}(id=${user.id})}" method="get">
+	<button type="submit">ログイン情報編集</button>
+</form>
 </body>
 </html>

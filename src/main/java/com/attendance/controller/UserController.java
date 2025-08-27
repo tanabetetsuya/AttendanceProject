@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.attendance.model.MissStampingApply;
 import com.attendance.model.TimeRecord;
 import com.attendance.model.User;
+import com.attendance.model.UserDto;
 import com.attendance.repository.MissStampingApplyRepository;
 import com.attendance.repository.UserRepository;
 import com.attendance.service.UserService;
@@ -85,4 +86,25 @@ public class UserController {
         
         return "user/AttendanceHandling";
     }
+    
+    // ユーザ情報編集画面を表示
+    @GetMapping("/user/edit/{id}")
+    public String editUserForm(@PathVariable int id, Model model) {
+        User user = service.getUserById(id);
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setRole(user.getRole());
+        // パスワードは空のまま（表示しない）
+        model.addAttribute("userDto", dto);
+        return "user/userEdit";
+    }
+
+    // ユーザ情報更新処理
+    @PostMapping("/user/edit")
+    public String updateUser(@ModelAttribute UserDto userDto) {
+        service.updateUser(userDto);
+        return "redirect:/user/AttendanceHandling"; // 更新後は勤怠処理画面に戻る
+    }
+
 }

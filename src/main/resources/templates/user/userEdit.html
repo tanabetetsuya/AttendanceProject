@@ -3,7 +3,7 @@
 <head><meta charset="UTF-8"><title>ユーザー編集</title></head>
 <body>
   <h2>ユーザー編集</h2>
-  <form th:action="@{/admin/edit}" th:object="${userDto}" method="post">
+  <form th:action="@{/user/edit}" th:object="${userDto}" method="post">
     <input type="hidden" th:field="*{id}"/>
 
     <p>

@@ -60,5 +60,8 @@
 		    <button type="submit">登録</button>
 		</form>
 	<a href="#" th:href="@{/user/logout}" th:attr="data-method='post'">ログアウト</a>
+	<form th:action="@{/user/edit/{id}(id=${user.id})}" method="get">
+		<button type="submit">ログイン情報編集</button>
+	</form>
 </body>
 </html>

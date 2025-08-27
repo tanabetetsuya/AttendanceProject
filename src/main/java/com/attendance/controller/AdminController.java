@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.attendance.model.MissStampingApply;
 import com.attendance.model.TimeRecord;
 import com.attendance.model.User;
+import com.attendance.model.UserDto;
 import com.attendance.service.UserService;
 
 @Controller
@@ -84,6 +85,26 @@ public class AdminController {
     	model.addAttribute("applyList", applyList);
     	return "admin/StampingApplyIndex";
     	
+    }
+    
+    // 管理者ユーザ情報編集画面を表示
+    @GetMapping("/admin/edit/{id}")
+    public String editAdminUserForm(@PathVariable int id, Model model) {
+        User user = service.getUserById(id);
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setRole(user.getRole());
+        // パスワードは空のまま（表示しない）
+        model.addAttribute("userDto", dto);
+        return "admin/userEdit";
+    }
+
+    // 管理者ユーザ情報更新処理
+    @PostMapping("/admin/edit")
+    public String updateUser(@ModelAttribute UserDto userDto) {
+        service.updateAdminUser(userDto);
+        return "redirect:/admin/users"; // 更新後はユーザ一覧に戻る
     }
 
 }
