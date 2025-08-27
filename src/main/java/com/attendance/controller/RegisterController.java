@@ -19,7 +19,7 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user/register") // "/register"というURLに対するGETリクエストを処理します
+    @GetMapping("/user/register") // "/userregister"というURLに対するGETリクエストを処理します
     public ModelAndView registerForm() {
         ModelAndView mav = new ModelAndView(); // ModelAndViewオブジェクトを作成します
         mav.addObject("user", new UserDto()); // 新しいUserDtoオブジェクトを"ユーザー"という名前で追加します
@@ -36,5 +36,24 @@ public class RegisterController {
         }
         userService.save(userDto); // ユーザーが存在しない場合、新しいユーザーを保存します
         return "user/login"; // 登録が成功した場合、ログイン画面を表示します
+    }
+    
+    @GetMapping("/admin/register")
+    public ModelAndView adminRegisterForm() {
+    	ModelAndView mav = new ModelAndView();
+    	mav.addObject("admin", new UserDto());
+    	mav.setViewName("admin/register");
+    	return mav;
+    }
+    
+    @PostMapping("/admin/register")
+    public String adminRegister(@ModelAttribute UserDto userDto) {
+    	User existing = userService.findByUsername(userDto.getName());
+    	if(existing != null) {
+    		// ユーザがすでに存在する場合の処理
+    		return "admin/register";
+    	}
+    	userService.saveAdmin(userDto);
+    	return "user/login";
     }
 }
