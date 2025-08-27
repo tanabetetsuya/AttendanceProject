@@ -9,6 +9,7 @@
 <table border="1">
   <thead>
     <tr>
+	  <th>タイムレコードID</th>
       <th>日付</th>
       <th>出勤時間</th>
       <th>退勤時間</th>
@@ -22,6 +23,7 @@
   </thead>
   <tbody>
     <tr th:each="record : ${records}">
+	  <td th:text="${record.timerecordId}"></td>
       <td th:text="${record.date}"></td>
       <td th:text="${record.startTime}"></td>
       <td th:text="${record.finishTime}"></td>

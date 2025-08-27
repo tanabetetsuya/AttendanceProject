@@ -11,6 +11,7 @@
   <thead>
     <tr>
       <th>申請ID</th>
+	  <th>タイムレコードID</th>
       <th>ユーザ名</th>
       <th>日付</th>
       <th>理由</th>
@@ -20,6 +21,7 @@
   <tbody>
     <tr th:each="apply : ${applyList}">
       <td th:text="${apply.missstampingId}"></td>
+	  <td th:text="${apply.timerecord.timerecordId}"></td>
       <td th:text="${apply.user.name}"></td>
       <td th:text="${apply.timerecord.date}"></td>
       <td th:text="${apply.reason}"></td>
