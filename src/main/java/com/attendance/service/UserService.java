@@ -69,11 +69,7 @@ public class UserService implements UserDetailsService { // UserDetailsService�
 
     //新たにメソッドを追加します
     public User findByUsername(String username) {
-        User user = userRepository.findByName(username); // ユーザー名でユーザーを検索し返します
-        if (user == null) {
-        	throw new RuntimeException("User not found" + username);
-        }
-        return user;
+        return userRepository.findByName(username);
     }
     
     public User getUserById(int id) {
