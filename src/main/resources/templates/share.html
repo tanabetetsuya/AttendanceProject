@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>共通パーツ</title>
+    <!-- Bootstrapを利用 -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}"/>
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-info mb-4"  th:fragment="header">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/book-lst">勤怠WEB管理システム</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-            
-                </div>
+        <div class="container-fluid row">
+			<div class="col-4">
+				<p th:if="${user != null}">ログイン中: <span th:text="${user.name}"></span></p>
+				<p th:if="${user == null}">ユーザ名情報が取得できません</p>
+				<p th:if="${user != null}">ユーザID: <span th:text="${user.id}"></span></p>
+				<p th:if="${user == null}">ユーザID情報が取得できません</p>
+			</div>
+			<div class="col-4">
+				<p class="navbar-brand text-center">勤怠WEB管理システム</p>
+			</div>
+            <div class="col4">
+				<form th:action="@{/user/logout}" method="post">
+					<button type="submit">ログアウト</button>
+				</form>
+				<form th:action="@{/user/edit/{id}(id=${user.id})}" method="get">
+					<button type="submit">ログイン情報編集</button>
+				</form>
             </div>
         </div>
     </nav>
 	<footer class="footer mt-5 py-3 bg-light" th:fragment="footer">
-		<div class="container">
-			<span class="text-muted">Place sticky footer content here.</span>
+		<div class="container text-center">
+			<span class="text-muted">©勤怠WEB管理システム2025.</span>
 		</div>
 	</footer>
+</body>
 </html>
