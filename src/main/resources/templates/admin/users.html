@@ -2,9 +2,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ユーザ一覧</title>
 </head>
 <body>
-
+<h2>ユーザ一覧</h2>
+<table border="1">
+	<p th:if="${user != null}">ログイン中: <span th:text="${user.name}"></span></p>
+    <p th:if="${user == null}">ユーザ名情報が取得できません</p>
+	<p th:if="${user != null}">ユーザID: <span th:text="${user.id}"></span></p>
+	<p th:if="${user == null}">ユーザID情報が取得できません</p>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>名前</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.name}"></td>
+      <td>
+        <a th:href="@{'/admin/user/' + ${user.id} + '/attendance'}">勤怠確認</a>
+      </td>
+    </tr>
+  </tbody>
+  <form th:action="@{/admin/StampingApplyIndex}" method="get">
+  	<button type="submit">誤打刻修正一覧</button>
+  </form>
+</table>
 </body>
 </html>
