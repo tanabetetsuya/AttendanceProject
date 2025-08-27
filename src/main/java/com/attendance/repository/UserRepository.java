@@ -1,5 +1,7 @@
 package com.attendance.repository;  // このファイルが属するパッケージ（フォルダ）
 
+import java.util.List;
+
 // 必要なツールをインポートしています
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,5 +12,7 @@ import com.attendance.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
     // ユーザー名でユーザーを探すメソッド。ユーザー名をパラメータとして渡すと、そのユーザー名を持つユーザーをデータベースから探して返します。
 	User findByName(String name);
+	
+	List<User> findAllByOrderByIdAsc();
 }
 
