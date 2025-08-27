@@ -13,9 +13,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.attendance.model.MissStampingApply;
 import com.attendance.model.TimeRecord;
 import com.attendance.model.User;
 import com.attendance.model.UserDto;
+import com.attendance.repository.MissStampingApplyRepository;
 import com.attendance.repository.TimeRecordRepository;
 import com.attendance.repository.UserRepository;
 
@@ -28,11 +30,23 @@ public class UserService implements UserDetailsService { // UserDetailsService�
 	
 	@Autowired // Springが自動的にTimeRecordRepositoryの実装を注入します
 	private TimeRecordRepository timeRecordRepository;
+	
+	@Autowired // Springが自動的にMissStampingApplyRepositoryの実装を注入します
+	private MissStampingApplyRepository missStampingApplyRepository;
 
     @Autowired // Springが自動的にPasswordEncoderの実装を注入します
     private PasswordEncoder passwordEncoder;
     
     
+    // 誤打刻申請一覧取得
+    public List<MissStampingApply> getAllMissStampingApply() {
+        return missStampingApplyRepository.findAllByOrderByMissstampingIdAsc();
+    }
+    
+    // ユーザ単位で誤打刻申請を取得
+    public List<MissStampingApply> getMissStampingApplyByUserId(int userId) {
+        return missStampingApplyRepository.findByUserIdOrderByMissstampingIdAsc(userId);
+    }
 
     @Override // UserDetailsServiceインターフェースのメソッドを上書きします
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -41,6 +55,11 @@ public class UserService implements UserDetailsService { // UserDetailsService�
             throw new UsernameNotFoundException("User not found"); // ユーザーが見つからない場合、例外をスローします
         }
         return new UserPrincipal(user); // ユーザーが見つかった場合、UserPrincipalを作成し返します
+    }
+    
+    public List<User> findAll(){
+    	return userRepository.findAllByOrderByIdAsc();
+    
     }
     
     // 新たにメソッドを追加します
@@ -64,7 +83,7 @@ public class UserService implements UserDetailsService { // UserDetailsService�
     
     // timerecordテーブル内のuser_idを検索するメソッドを追加します。
     public List<TimeRecord> getTimeRecordsByUserId(int userId){
-    	return timeRecordRepository.findByUserId(userId);
+    	return timeRecordRepository.findByUserIdOrderByTimerecordIdAsc(userId);
     }
     
     @Transactional
