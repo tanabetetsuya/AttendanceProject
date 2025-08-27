@@ -35,9 +35,9 @@ public class LoginController {
             for (GrantedAuthority authority : authentication.getAuthorities()) {
                 String role = authority.getAuthority();
                 if ("ROLE_ADMIN".equals(role)) {
-                    return "redirect:/admin/index";
+                    return "redirect:/admin/users";
                 } else if ("ROLE_USER".equals(role)) {
-                    return "redirect:/user/index";
+                    return "redirect:/user/AttendanceHandling";
                 }
             }
         }
