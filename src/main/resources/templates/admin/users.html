@@ -27,9 +27,13 @@
       </td>
     </tr>
   </tbody>
-  <form th:action="@{/admin/StampingApplyIndex}" method="get">
-  	<button type="submit">誤打刻修正一覧</button>
-  </form>
 </table>
+<form th:action="@{/admin/StampingApplyIndex}" method="get">
+  <button type="submit">誤打刻修正一覧</button>
+</form>
+<p>
+    Don't have an account? <a th:href="@{/admin/register}">Register</a>  <!-- 新規アカウント作成ページへのリンクを追加 -->
+</p>
+<a href="#" th:href="@{/admin/logout}" th:attr="data-method='post'">ログアウト</a>
 </body>
 </html>
