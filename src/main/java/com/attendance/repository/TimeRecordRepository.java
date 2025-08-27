@@ -10,4 +10,5 @@ import com.attendance.model.TimeRecord;
 // TimeRecordRepositoryというインターフェースを作成します。JpaRepositoryを拡張して、TimeRecordオブジェクトとそれらのIDをInteger型で扱えるようにします。
 public interface TimeRecordRepository extends JpaRepository<TimeRecord, Integer>{
 	List<TimeRecord> findByUserId(int userId);
+	List<TimeRecord> findByUserIdOrderByTimerecordIdAsc(int userId);
 }
